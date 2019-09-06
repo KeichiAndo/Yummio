@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -14,6 +15,7 @@ public class DetailActivity extends AppCompatActivity {
     public static int CURRENT_PAGE = 0;
     private int TOTAL_PAGE = 0;
 
+    private TextView mSteps;
     private Button mPrevButton;
     private Button mNextButton;
 
@@ -26,11 +28,13 @@ public class DetailActivity extends AppCompatActivity {
 
         CURRENT_MENU = Integer.parseInt(intent.getStringExtra(intent.EXTRA_TEXT));
         CURRENT_PAGE = 0;
-        TOTAL_PAGE = MainActivity.cakeArrayList.get(CURRENT_MENU).getSteps().size()-1;
+        TOTAL_PAGE = MainActivity.cakeArrayList.get(CURRENT_MENU).getSteps().size() - 1;
 
+        mSteps = findViewById(R.id.tv_steps_label);
         mPrevButton = findViewById(R.id.btn_previous);
         mNextButton = findViewById(R.id.btn_next);
 
+        changeStepsLabel();
         buttonsEnabler();
         showFragment();
 
@@ -38,6 +42,7 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 CURRENT_PAGE--;
+                changeStepsLabel();
                 buttonsEnabler();
                 showFragment();
             }
@@ -47,10 +52,15 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 CURRENT_PAGE++;
+                changeStepsLabel();
                 buttonsEnabler();
                 showFragment();
             }
         });
+    }
+
+    private void changeStepsLabel() {
+        mSteps.setText("Steps " + (CURRENT_PAGE + 1) + " of " + (TOTAL_PAGE + 1));
     }
 
     private void buttonsEnabler() {
